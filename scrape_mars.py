@@ -1,7 +1,6 @@
 def scrape():
     from splinter import Browser
     from bs4 import BeautifulSoup
-    import requests
     import pandas as pd
     
     executable_path = {'executable_path': 'chromedriver.exe'}
@@ -40,13 +39,15 @@ def scrape():
     mars_weather=f'''{twitter_soup.find_all('p',class_='TweetTextSize TweetTextSize--normal js-tweet-text tweet-text')[0].text.split('pic')[0]} 
     {twitter_soup.find_all('a',class_='tweet-timestamp js-permalink js-nav js-tooltip')[0]['title']}'''
     
-    tb=pd.read_html("https://space-facts.com/mars/")[0].to_html()
+    tb_df=pd.read_html("https://space-facts.com/mars/")[0]
+    tb_df.columns=['description','value']
+    tb=tb_df.set_index('description').to_html()
     
     hemisphere_image_urls = [
-        {"title": "Valles Marineris Hemisphere", "img_url": "http://astropedia.astrogeology.usgs.gov/download/Mars/Viking/valles_marineris_enhanced.tif"},
-        {"title": "Cerberus Hemisphere", "img_url": "http://astropedia.astrogeology.usgs.gov/download/Mars/Viking/cerberus_enhanced.tif"},
-        {"title": "Schiaparelli Hemisphere", "img_url": "http://astropedia.astrogeology.usgs.gov/download/Mars/Viking/schiaparelli_enhanced.tif"},
-        {"title": "Syrtis Major Hemisphere", "img_url": "http://astropedia.astrogeology.usgs.gov/download/Mars/Viking/syrtis_major_enhanced.tif"},
+        {"title": "Valles Marineris Hemisphere", "img_url": "https://astropedia.astrogeology.usgs.gov/download/Mars/Viking/valles_marineris_enhanced.tif/full.jpg"},
+        {"title": "Cerberus Hemisphere", "img_url": "https://astropedia.astrogeology.usgs.gov/download/Mars/Viking/cerberus_enhanced.tif/full.jpg"},
+        {"title": "Schiaparelli Hemisphere", "img_url": "https://astropedia.astrogeology.usgs.gov/download/Mars/Viking/schiaparelli_enhanced.tif/full.jpg"},
+        {"title": "Syrtis Major Hemisphere", "img_url": "https://astropedia.astrogeology.usgs.gov/download/Mars/Viking/syrtis_major_enhanced.tif/full.jpg"},
     ]
     
     scrape_dict={'latest_news_title':latest_news_title,
