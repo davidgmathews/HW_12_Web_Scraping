@@ -24,7 +24,7 @@ def scr():
     # Creates a collection in the database and inserts two documents
     mars_dict=scrape()
     db.scrape_results.insert_many([mars_dict])
-    return render_template('index.html', mars_dict=mars_dict,tb=make_response(mars_dict['table_html'],200))
+    return render_template('index.html', mars_dict=mars_dict)
     
 
 # Set route
@@ -36,8 +36,7 @@ def indx():
     client = pymongo.MongoClient(conn)
     # Cnnect to a database. Will create one if not already available.
     db = client.mars_db
-    mars_dict=db.scrape_results
-    
+    mars_dict=db.scrape_results.find()[0]
     return render_template('index.html', mars_dict=mars_dict)
 
 
